@@ -36,9 +36,9 @@ tj:
       endpoint: "*******"
       bucket: "*******"
   tencent:
-    appId: ${tj.tencent.appId}
-    secretId: ${tj.tencent.secretId}
-    secretKey: ${tj.tencent.secretKey}
+    appId: 1312394356
+    secretId: REDACTED
+    secretKey: REDACTED
     vod:
       enable: true
       vodValidSeconds: 7776000
