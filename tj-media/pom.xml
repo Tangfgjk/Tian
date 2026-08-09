@@ -98,6 +98,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- .env 文件支持（本地环境变量，密钥不入库） -->
+        <dependency>
+            <groupId>me.paulschwarz</groupId>
+            <artifactId>spring-dotenv</artifactId>
+        </dependency>
         <!--阿里云OSS的SDK-->
         <dependency>
             <groupId>com.aliyun.oss</groupId>
