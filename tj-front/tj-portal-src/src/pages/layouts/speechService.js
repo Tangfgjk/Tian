@@ -1,7 +1,8 @@
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 
 // import { SpeechSDK } from '@azure/cognitiveservices-speech-sdk';
-const subscriptionKey = "REDACTED";
+// 密钥从 .env 文件读取（见 .env.example），避免硬编码进代码仓库
+const subscriptionKey = import.meta.env.VITE_AZURE_SUBSCRIPTION_KEY || "";
 const serviceRegion = "eastasia"; // e.g., "westus"
 
 export const recognizeSpeech = (audioConfig) => {
