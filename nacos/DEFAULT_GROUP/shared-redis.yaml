@@ -1,7 +1,8 @@
 spring:
   redis:
-    host: ${tj.redis.host:192.168.150.101}
-    password: ${tj.redis.password:123321}
+    host: ${tj.redis.host:127.0.0.1}
+    port: ${tj.redis.port:16379}
+    password: ${tj.redis.password:541521}
     lettuce:
       pool:
         max-active: ${tj.redis.pool.max-active:8}
