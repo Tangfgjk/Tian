@@ -50,14 +50,14 @@ tj:
     media: TENCENT
   tencent:
     appId: 1312394356
-    secretId: REDACTED
-    secretKey: REDACTED
+    secretId: ${TJ_TENCENT_SECRET_ID:xxx}
+    secretKey: ${TJ_TENCENT_SECRET_KEY:xxx}
     vod:
       enable: true
       vodValidSeconds: 7776000
       region: "ap-shanghai"
       procedure: "wisehub-base"
-      urlKey: "REDACTED"
+      urlKey: "${TJ_TENCENT_URL_KEY:xxx}"
       # 旧版播放器签名字段，新版签名已改用 transcodeDefinition + contentInfo，可忽略本项
       pfcg: "basicDrmPreset"
       # 必填：云点播控制台「视频处理」-「转码模板」中的模板数字 ID（播放 JWT 的 contentInfo.transcodeDefinition）
