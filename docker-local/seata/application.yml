@@ -1,0 +1,42 @@
+# Seata Server 本地配置（1.5.2）
+server:
+  port: 7091
+
+console:
+  user:
+    username: seata
+    password: seata
+
+seata:
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: tianji-nacos:8848
+      namespace: c975b6f4-de7e-40ad-9b15-4a245ce7a2ef
+      group: DEFAULT_GROUP
+      username: nacos
+      password: nacos
+  config:
+    type: file
+  store:
+    mode: db
+    db:
+      datasource: druid
+      db-type: mysql
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://tianji-mysql:3306/seata?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      user: root
+      password: ${SEATA_DB_PASSWORD:541521}
+      min-conn: 5
+      max-conn: 30
+      global-table: global_table
+      branch-table: branch_table
+      lock-table: lock_table
+      query-limit: 100
+      max-wait: 5000
+  security:
+    secretKey: SeataSecretKey0c382ef121d778043159209298fd40bf3850a017
+    tokenValidityInMilliseconds: 1800000
+    ignore:
+      urls: /,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/api/v1/auth/login

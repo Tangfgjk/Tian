@@ -1,0 +1,11 @@
+spring:
+  redis:
+    host: ${tj.redis.host:127.0.0.1}
+    port: ${tj.redis.port:16379}
+    password: ${tj.redis.password:541521}
+    lettuce:
+      pool:
+        max-active: ${tj.redis.pool.max-active:8}
+        max-idle: ${tj.redis.pool.max-idle:8}
+        min-idle: ${tj.redis.pool.min-idle:1}
+        max-wait: ${tj.redis.pool.max-wait:300}
