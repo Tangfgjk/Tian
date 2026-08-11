@@ -98,4 +98,66 @@ Caffeine**本地缓存工具
 3.  提交代码
 4.  新建 Pull Request
 
+---
+
+## 本地开发部署（基于 Docker）
+
+本项目使用本地 Docker 部署中间件，代码在 IDEA 中运行（部署方式与 online-mooc 一致，两者共用同一套本地中间件）。
+
+### 分支说明
+
+- `Origin-code`：初始学习代码快照（来自上游 `lesson-init`，云平台密钥已脱敏为 `xxx`）
+- `Dev`：基于 Origin-code 的日常开发分支
+- `lesson-init`：上游原始分支（含完整历史，留作对照）
+
+### 中间件清单
+
+| 中间件 | 端口 | 账号/密码 | 控制台 |
+|--------|------|-----------|--------|
+| Nacos | 8848 / 9848 | 未启用认证 | http://127.0.0.1:8848/nacos/ |
+| MySQL | 13390 | root / 541521 | — |
+| Redis | 16379 | 541521 | — |
+| RabbitMQ | 5672 / 15672 | root / 541521 | http://127.0.0.1:15672/ |
+| RocketMQ | 9876 / 10911 | — | — |
+| MinIO | 9000 / 9001 | admin / admin123456 | http://127.0.0.1:9001/ |
+| XXL-Job | 8880 | admin / 123456 | http://127.0.0.1:8880/xxl-job-admin |
+| Seata | 8091 / 7091 | seata / seata | http://127.0.0.1:7091/ |
+
+### 启动步骤
+
+1. 启动 Docker Desktop，等待状态变为 Running
+2. 执行 `docker-local\start-infra.ps1` 一键拉起全部中间件
+3. 首次部署执行 `docker-local\import-sql-fixed-v2.ps1`（提示时输入 `IMPORT`）导入 14 个业务库
+4. 首次部署执行 `docker-local\import-nacos.ps1` 导入 Nacos 配置
+5. IDEA 打开项目，在 Run Configuration 中配置环境变量（模板见 `docker-local/idea-env.example.txt`）
+6. 按 gateway → auth → user 的顺序启动微服务
+
+### IDEA 环境变量
+
+```
+SPRING_PROFILES_ACTIVE=local
+SPRING_CLOUD_NACOS_SERVER_ADDR=127.0.0.1:8848
+SPRING_CLOUD_NACOS_DISCOVERY_IP=127.0.0.1
+TJ_JDBC_HOST=127.0.0.1
+TJ_JDBC_PORT=13390
+TJ_JDBC_USERNAME=root
+TJ_JDBC_PASSWORD=541521
+TJ_REDIS_HOST=127.0.0.1
+TJ_REDIS_PORT=16379
+TJ_REDIS_PASSWORD=541521
+TJ_MQ_HOST=127.0.0.1
+TJ_MQ_PORT=5672
+TJ_MQ_USERNAME=root
+TJ_MQ_PASSWORD=541521
+TJ_MQ_VHOST=/tjxt
+```
+
+### 注意事项
+
+- 与 online-mooc 共用同一套本地中间件，**不要同时启动两个项目的服务**（服务名相同，会互相注册导致负载均衡串了）
+- 媒体/短信/支付密钥为脱敏占位符 `xxx`（tj-media、tj-message、tj-pay 的 bootstrap.yml），不影响启动，需要真实功能时填入自己的密钥
+- Elasticsearch 未部署在 compose 中（tj-search 配置指向 `127.0.0.1:9200`），搜索功能暂不可用，需要时再补 ES 容器
+- 多个含 XXL-Job 的服务同时启动时，需给每个服务配置不同的 `tj.xxl-job.executor.port`（默认 9999 会端口冲突）
+- RocketMQ 的 store 使用宿主机目录绑定挂载（`docker-local/rocketmq-store`），这是 Docker Desktop 上避免 broker 启动即退出的必要配置
+
 
